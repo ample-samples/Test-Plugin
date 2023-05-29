@@ -3,10 +3,12 @@ import TestPluginSettingsTab from 'settings'
 
 interface testPluginSettings {
 	replaceWith: string;
+	replace: string
 }
 
 const DEFAULT_SETTINGS: Partial<testPluginSettings> = {
 	replaceWith: '\nAND HIS NAME IS JOHN CENA\n',
+	replace: ' ',
 }
 
 export default class TestPlugin extends Plugin {
@@ -26,7 +28,7 @@ export default class TestPlugin extends Plugin {
 
 		new Notice("Test Plugin has been loaded.");
 
-		this.addSettingTab(new TestPluginSettingsTab(this.app, this ))
+		this.addSettingTab(new TestPluginSettingsTab(this.app, this))
 
 		this.addCommand({
 			id: "test-command2",
@@ -35,6 +37,7 @@ export default class TestPlugin extends Plugin {
 				new Notice("Replace with: " + this.settings.replaceWith);
 			}
 		})
+		const reg = new RegExp(this.settings.replace, "g");
 
 		this.addCommand({
 			id: "test-command1",
@@ -42,7 +45,7 @@ export default class TestPlugin extends Plugin {
 			editorCallback: (editor, view) => {
 				const value = editor
 					.getValue()
-					.replace(/ /g, `${this.settings.replaceWith}`)
+					.replace(reg, `${this.settings.replaceWith}`)
 
 				editor.setValue(value);
 			}

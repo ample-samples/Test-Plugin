@@ -24,6 +24,13 @@ export default class TestPluginSettingsTab extends PluginSettingTab {
 				})
 		})
 
+		new Setting(this.containerEl).setName("String to replace").setDesc("The text to replace").addText((item) => {
+			item.setValue(this.plugin.settings.replace).onChange(
+				(value) => {
+					this.plugin.settings.replace = value;
+					this.plugin.saveSettings();
+				})
+		})
 	}
 
 }
